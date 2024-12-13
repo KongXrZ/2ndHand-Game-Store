@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>ชื่อร้าน</h1>
+      <button>ซื้อสินค้า</button>
+      <button>Why us</button>
+    </div>
+    <div>
+      <a href="#">Categories</a>
+      <a href="/post-game">Post Game</a>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Search Game</h2>
+      <input type="text" placeholder="Search Game" />
+      <p>Filters: Title | Description | Condition</p>
+    </section>
+
+    <section>
+      <h2>Categories</h2>
+      <button>RPG</button>
+      <button>Action</button>
+      <button>Adventure</button>
+    </section>
+
+    <section>
+      <h2>Game List</h2>
+      <div class="game-list">
+        <% games.forEach(game => { %>
+          <div class="game-item">
+            <h3><%= game.title %></h3>
+            <p><%= game.description %></p>
+            <p>Condition: <%= game.item_condition %></p>
+            <p>End Time: <%= game.end_time %></p>
+            <% if (game.image) { %>
+              <img src="/uploads/<%= game.image %>" alt="<%= game.title %>" />
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -18,6 +18,21 @@ const connection = mysql.createConnection({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Route สำหรับหน้า Home Page
+app.get('/', (req, res) => {
+  const query = 'SELECT title, description, item_condition, end_time, image FROM post';
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', err);
+      return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูล');
+    }
+    res.json(results); // ส่งข้อมูลเป็น JSON ไปยังหน้าเว็บ
+  });
+});
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 // ตั้งค่า multer สำหรับอัปโหลดไฟล์
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -33,9 +48,8 @@ const upload = multer({ storage: storage });
 app.use('/uploads', express.static('uploads'));
 
 // Route สำหรับฟอร์มการกรอกข้อมูล
-app.post('/submit-game', upload.single('image-upload'), (req, res) => {
-  console.log(req.body); // ดูข้อมูลที่ได้รับจากฟอร์ม
-  console.log(req.file); // ดูข้อมูลไฟล์ที่อัปโหลด
+app.post('/submit', upload.single('image-upload'), (req, res) => {
+  console.log("Dai mai")
   const { title, description, category, condition, starting_price, end_time, email } = req.body;
   const imageUrl = req.file ? req.file.path : null; // เก็บเส้นทางของไฟล์ที่อัปโหลด
 
@@ -49,7 +63,7 @@ app.post('/submit-game', upload.single('image-upload'), (req, res) => {
       return res.status(500).send('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
     }
 
-    res.send('ข้อมูลได้ถูกบันทึกเรียบร้อยแล้ว!');
+    res.redirect('/');
   });
 });
 
